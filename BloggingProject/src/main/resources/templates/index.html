@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Management</title>
+    <style>
+        /* Using the Teal & Charcoal Professional Colors from the first version */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Header Section */
+        .header-area {
+            display: flex;
+            justify-content: center; /* Centers the title */
+            align-items: center;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .btn-add {
+            position: absolute;
+            right: 0;
+            background-color: #00adb5; /* Teal accent */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background-color: #008c92;
+        }
+
+        /* Management Card - Matching your Screenshot */
+        .management-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .management-card h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .id-input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #121212;
+            color: #fff;
+            outline: none;
+        }
+
+        .btn-action {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-edit { background-color: #2563eb; } /* Blue for edit */
+        .btn-delete { background-color: #dc2626; } /* Red for delete */
+
+        .btn-action:hover { opacity: 0.8; }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #252525;
+            color: #00adb5; /* Teal headers */
+            text-align: left;
+            padding: 15px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            border-bottom: 2px solid #333;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            color: #ccc;
+        }
+
+        tr:hover td {
+            background-color: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-area">
+        <h2>All Blog Posts</h2>
+        <a href="/new" class="btn-add">+ New Post</a>
+    </div>
+
+    <div class="management-card">
+        <h3>Update or Delete a Post by ID</h3>
+        <div class="input-group">
+            <input type="text" id="postId" class="id-input" placeholder="Enter Post ID">
+            <button class="btn-action btn-edit" onclick="performAction('edit')">Edit Post</button>
+            <button class="btn-action btn-delete" onclick="performAction('delete')">Delete Post</button>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 30%;">Title</th>
+            <th style="width: 25%;">Author</th>
+            <th style="width: 45%;">Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${listPosts}">
+            <td th:text="${post.title}">Exploring Spring Boot</td>
+            <td th:text="${post.author}">Admin</td>
+            <td th:text="${#strings.abbreviate(post.content, 60)}">Content preview goes here...</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function performAction(type) {
+        const id = document.getElementById('postId').value;
+        if (!id) {
+            alert("Please provide a Post ID");
+            return;
+        }
+        // Navigates to /edit/ID or /delete/ID
+        window.location.href = "/" + type + "/" + id;
+    }
+</script>
+
+</body>
+</html>
